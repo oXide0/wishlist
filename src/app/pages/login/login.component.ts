@@ -11,11 +11,11 @@ interface User {
 })
 export class LoginComponent {
   public users: User[] = [
-    { name: 'Father', photo: 'assets/father.jpg' },
-    { name: 'Mother', photo: 'assets/mother.jpg' },
-    { name: 'Sister 1', photo: 'assets/sister1.jpg' },
-    { name: 'Sister 2', photo: 'assets/sister2.jpg' },
-    { name: 'Me', photo: 'assets/me.jpg' },
+    { name: 'Father', photo: 'father.webp' },
+    { name: 'Mother', photo: 'mother.webp' },
+    { name: 'Sister 1', photo: 'katia.webp' },
+    { name: 'Sister 2', photo: 'maria.webp' },
+    { name: 'Me', photo: 'nazar.webp' },
   ];
 
   login(user: User) {
