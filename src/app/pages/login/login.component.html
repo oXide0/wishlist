@@ -1,0 +1,13 @@
+<div class="flex justify-center items-center h-screen bg-gray-100">
+  <div
+    class="grid grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-white shadow-lg rounded-xl"
+  >
+    @for (user of users; track $index) {
+    <div class="flex items-center space-x-4">
+      <div>
+        <h2 class="text-lg font-semibold">{{ user.name }}</h2>
+      </div>
+    </div>
+    }
+  </div>
+</div>
