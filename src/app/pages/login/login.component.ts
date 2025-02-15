@@ -1,24 +1,41 @@
 import { Component } from '@angular/core';
-
-interface User {
-  name: string;
-  photo: string;
-}
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
+  imports: [
+    RouterLink,
+    MatInputModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+  ],
 })
 export class LoginComponent {
-  public users: User[] = [
-    { name: 'Father', photo: 'father.webp' },
-    { name: 'Mother', photo: 'mother.webp' },
-    { name: 'Sister 1', photo: 'katia.webp' },
-    { name: 'Sister 2', photo: 'maria.webp' },
-    { name: 'Me', photo: 'nazar.webp' },
-  ];
+  loginForm: FormGroup;
 
-  login(user: User) {
-    console.log('Logged in as', user.name);
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  onSubmit() {
+    if (this.loginForm.valid) {
+      console.log('Login Data:', this.loginForm.value);
+    }
   }
 }

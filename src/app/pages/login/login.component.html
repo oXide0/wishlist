@@ -1,18 +1,53 @@
-<div class="flex justify-center items-center h-screen bg-gray-100">
-  <div
-    class="grid grid-cols-2 md:grid-cols-3 gap-6 p-6 bg-white shadow-lg rounded-xl"
-  >
-    @for (user of users; track $index) {
-    <div class="flex items-center space-x-4">
-      <div>
-        <img
-          src="{{ user.photo }}"
-          alt="{{ user.name }}"
-          class="w-12 h-12 rounded-full"
-        />
-        <h2 class="text-lg font-semibold">{{ user.name }}</h2>
-      </div>
-    </div>
-    }
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-sm">
+    <h2 class="text-2xl font-bold text-center text-gray-700">Login</h2>
+
+    <form
+      [formGroup]="loginForm"
+      (ngSubmit)="onSubmit()"
+      class="space-y-4 mt-4"
+    >
+      <mat-label>Email</mat-label>
+      <mat-form-field class="w-full" appearance="outline">
+        <input matInput type="email" formControlName="email" />
+        @if (loginForm.get('email')!.hasError('required') &&
+        loginForm.get('email')!.touched) {
+        <mat-error>Email is required.</mat-error>
+        } @else if (loginForm.get('email')!.hasError('email') &&
+        loginForm.get('email')!.touched) {
+        <mat-error>Please enter a valid email address.</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-label>Password</mat-label>
+      <mat-form-field class="w-full flex flex-col" appearance="outline">
+        <input matInput type="password" formControlName="password" />
+        @if (loginForm.get('password')!.hasError('required') &&
+        loginForm.get('password')!.touched) {
+        <mat-error>Password is required.</mat-error>
+        } @else if (loginForm.get('password')!.hasError('minlength') &&
+        loginForm.get('password')!.touched) {
+        <mat-error>Password must be at least 6 characters long.</mat-error>
+        }
+      </mat-form-field>
+
+      <button
+        mat-flat-button
+        color="primary"
+        class="w-full py-2"
+        [disabled]="loginForm.invalid"
+      >
+        Login
+      </button>
+    </form>
+
+    <p class="text-sm text-center mt-3">
+      Don't have an account!
+      <a
+        [routerLink]="['/register']"
+        class="text-blue-600 hover:underline cursor-pointer"
+        >Sign up</a
+      >
+    </p>
   </div>
 </div>
