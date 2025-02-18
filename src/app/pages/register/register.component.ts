@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 interface RegisterForm {
   name: FormControl<string>;
@@ -32,7 +33,7 @@ interface RegisterForm {
 export class RegisterComponent {
   registerForm: FormGroup<RegisterForm>;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private userService: UserService) {
     this.registerForm = new FormGroup<RegisterForm>({
       name: new FormControl('', {
         validators: [Validators.required, Validators.minLength(2)],
@@ -51,8 +52,16 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.registerForm.valid) {
-      console.log('Register Data:', this.registerForm.value);
-      // Call authentication service here
+      console.log(this.registerForm.getRawValue());
+      this.userService.register(this.registerForm.getRawValue()).subscribe(
+        (user) => {
+          console.log('User registered', user);
+          this.router.navigate(['/login']);
+        },
+        (error) => {
+          console.error('Error registering user', error);
+        }
+      );
     }
   }
 }

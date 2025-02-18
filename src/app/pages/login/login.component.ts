@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {
-  FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -10,6 +10,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { RouterLink } from '@angular/router';
+import { UserService } from '../../services/user.service';
+
+interface LoginForm {
+  email: FormControl<string>;
+  password: FormControl<string>;
+}
 
 @Component({
   selector: 'app-login',
@@ -24,18 +30,31 @@ import { RouterLink } from '@angular/router';
   ],
 })
 export class LoginComponent {
-  loginForm: FormGroup;
+  loginForm: FormGroup<LoginForm>;
 
-  constructor(private fb: FormBuilder) {
-    this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+  constructor(private userService: UserService) {
+    this.loginForm = new FormGroup<LoginForm>({
+      email: new FormControl('', {
+        validators: [Validators.required, Validators.email],
+        nonNullable: true,
+      }),
+      password: new FormControl('', {
+        validators: [Validators.required, Validators.minLength(6)],
+        nonNullable: true,
+      }),
     });
   }
 
   onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Login Data:', this.loginForm.value);
+      this.userService.login(this.loginForm.getRawValue()).subscribe(
+        (user) => {
+          console.log('User logged in', user);
+        },
+        (error) => {
+          console.error('User not found', error);
+        }
+      );
     }
   }
 }
