@@ -31,6 +31,14 @@
         }
       </mat-form-field>
 
+      <input
+        type="text"
+        name="value"
+        [(ngModel)]="value"
+        [ngModelOptions]="{ standalone: true }"
+      />
+      <button (click)="logValue()">log</button>
+
       <button
         mat-flat-button
         color="primary"

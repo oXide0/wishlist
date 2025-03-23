@@ -4,6 +4,7 @@ import {
   FormGroup,
   ReactiveFormsModule,
   Validators,
+  FormsModule,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -27,10 +28,12 @@ interface LoginForm {
     MatCardModule,
     MatFormFieldModule,
     ReactiveFormsModule,
+    FormsModule,
   ],
 })
 export class LoginComponent {
   loginForm: FormGroup<LoginForm>;
+  value = '';
 
   constructor(private userService: UserService) {
     this.loginForm = new FormGroup<LoginForm>({
@@ -56,5 +59,14 @@ export class LoginComponent {
         }
       );
     }
+  }
+
+  onChange(e: any) {
+    this.value = e.target.value;
+    console.log(this.value);
+  }
+
+  logValue() {
+    console.log(this.value);
   }
 }

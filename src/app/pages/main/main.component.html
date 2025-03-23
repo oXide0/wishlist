@@ -1,0 +1,56 @@
+<!-- src/app/main/main.component.html -->
+<div class="flex flex-col items-center p-4">
+  <h1 class="text-3xl font-bold text-gray-700 mb-6">
+    Wish List for Family Member
+  </h1>
+
+  @for (item of items; track $index) {
+  <mat-card class="max-w-sm w-full mb-6 shadow-lg rounded-lg">
+    <mat-card-header>
+      <mat-card-title>{{ item.name }}</mat-card-title>
+      <mat-card-subtitle>{{ item.description }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p>Priority: {{ item.priority }}</p>
+    </mat-card-content>
+
+    <mat-card-actions class="flex justify-end">
+      <!-- Add buttons for editing and deleting -->
+      <button
+        mat-button
+        color="primary"
+        (click)="editItem(item)"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Edit
+      </button>
+      <button
+        mat-button
+        color="warn"
+        (click)="deleteItem(item.id)"
+        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Delete
+      </button>
+    </mat-card-actions>
+  </mat-card>
+  }
+
+  <!-- Button to add new item -->
+  <button
+    mat-button
+    color="accent"
+    (click)="
+      addItem({
+        userId: '1',
+        name: 'New Item',
+        description: 'Description here',
+        priority: 1
+      })
+    "
+    class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+  >
+    Add New Item
+  </button>
+</div>

@@ -12,5 +12,14 @@
       "email": "nazar10fantom@gmail.com",
       "password": "123456"
     }
+  ],
+  "items": [
+    {
+      "id": "5692",
+      "userId": "1",
+      "name": "New Item",
+      "description": "Description here",
+      "priority": 1
+    }
   ]
 }
