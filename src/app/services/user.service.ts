@@ -33,7 +33,6 @@ export class UserService {
     email: string;
     password: string;
   }): Observable<User> {
-    console.log('registering user');
     return this.http.post<User>('http://localhost:3000/users', {
       name,
       email,

@@ -17,7 +17,6 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
     this.wishlistService.getWishlistByUserId(this.userId).subscribe((items) => {
-      console.log('Items', items);
       this.items = items;
     });
   }
