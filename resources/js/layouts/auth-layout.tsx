@@ -1,4 +1,4 @@
-import { AuthSimpleLayout } from '@/layouts/auth/auth-simple-layout';
+import { AuthSimpleLayout } from '@/layouts/auth-simple-layout';
 
 export function AuthLayout({ children, title, description, ...props }: { children: React.ReactNode; title: string; description: string }) {
     return (
