@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 uses(\Illuminate\Foundation\Testing\RefreshDatabase::class);
 
@@ -15,11 +16,11 @@ test('users can authenticate using the login screen', function () {
 
     $response = $this->post('/login', [
         'username' => $user->username,
-        'password' => 'password',
+        'password' => Hash::make('password'),
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('main', absolute: false));
+    $response->assertRedirect(route('/', absolute: false));
 });
 
 test('users can not authenticate with invalid password', function () {
