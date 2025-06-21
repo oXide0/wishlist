@@ -64,7 +64,7 @@ class WishlistItemController extends Controller
     {
         $item = Auth::user()->wishlistItems()->findOrFail($id);
         $item->update($request->only('title', 'description'));
-        return response()->json($item, 201);
+        return redirect()->back();
     }
 
     /**
@@ -72,8 +72,8 @@ class WishlistItemController extends Controller
      */
     public function destroy(string $id)
     {
-        $wishlistItem = WishlistItem::find($id);
+        $wishlistItem = Auth::user()->wishlistItems()->findOrFail($id);
         $wishlistItem->delete();
-        return response()->json(null, 204);
+        return redirect()->back();
     }
 }

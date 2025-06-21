@@ -1,6 +1,6 @@
 import { type SharedData } from '@/types';
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react';
-import React from 'react';
+import React, { useState } from 'react';
 
 type WishlistItem = {
     id: number;
@@ -17,11 +17,40 @@ export default function Main() {
         description: '',
     });
 
+    const [editingId, setEditingId] = useState<number | null>(null);
+    const [editData, setEditData] = useState<{ title: string; description?: string }>({ title: '', description: '' });
+
     function handleSubmit(e: React.FormEvent) {
         e.preventDefault();
         post(route('wishlist-items.store'), {
             onSuccess: () => reset(),
         });
+    }
+
+    function handleDelete(itemId: number) {
+        if (window.confirm('Are you sure you want to remove this item?')) {
+            router.delete(route('wishlist-items.destroy', itemId));
+        }
+    }
+
+    function handleEdit(item: WishlistItem) {
+        setEditingId(item.id);
+        setEditData({ title: item.title, description: item.description || '' });
+    }
+
+    function handleUpdate(e: React.FormEvent, itemId: number) {
+        e.preventDefault();
+        router.put(route('wishlist-items.update', itemId), editData, {
+            onSuccess: () => setEditingId(null),
+        });
+    }
+
+    function handleEditChange(field: 'title' | 'description', value: string) {
+        setEditData((prev) => ({ ...prev, [field]: value }));
+    }
+
+    function handleCancelEdit() {
+        setEditingId(null);
     }
 
     return (
@@ -63,10 +92,46 @@ export default function Main() {
                             ) : (
                                 <ul className="space-y-3">
                                     {wishlistItems.map((item) => (
-                                        <li key={item.id} className="rounded border bg-white px-4 py-2 shadow-sm">
-                                            <div className="font-medium">{item.title}</div>
-                                            {item.description && <div className="text-sm text-gray-600">{item.description}</div>}
-                                            <div className="text-xs text-gray-400">{new Date(item.created_at).toLocaleDateString()}</div>
+                                        <li key={item.id} className="flex items-center justify-between rounded border bg-white px-4 py-2 shadow-sm">
+                                            {editingId === item.id ? (
+                                                <form onSubmit={(e) => handleUpdate(e, item.id)} className="flex flex-1 flex-col gap-1">
+                                                    <input
+                                                        value={editData.title}
+                                                        onChange={(e) => handleEditChange('title', e.target.value)}
+                                                        className="w-full rounded border px-2 py-1"
+                                                        required
+                                                    />
+                                                    <textarea
+                                                        value={editData.description}
+                                                        onChange={(e) => handleEditChange('description', e.target.value)}
+                                                        className="w-full rounded border px-2 py-1"
+                                                    />
+                                                    <div className="mt-1 flex gap-2">
+                                                        <button type="submit" className="text-green-600">
+                                                            Save
+                                                        </button>
+                                                        <button type="button" onClick={handleCancelEdit} className="text-gray-500">
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            ) : (
+                                                <div className="flex-1">
+                                                    <div className="font-medium">{item.title}</div>
+                                                    {item.description && <div className="text-sm text-gray-600">{item.description}</div>}
+                                                    <div className="text-xs text-gray-400">{new Date(item.created_at).toLocaleDateString()}</div>
+                                                </div>
+                                            )}
+                                            {editingId !== item.id && (
+                                                <div className="flex gap-2">
+                                                    <button className="text-blue-500 hover:underline" onClick={() => handleEdit(item)}>
+                                                        Edit
+                                                    </button>
+                                                    <button className="text-red-500 hover:underline" onClick={() => handleDelete(item.id)}>
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            )}
                                         </li>
                                     ))}
                                 </ul>
