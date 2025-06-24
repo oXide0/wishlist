@@ -9,7 +9,7 @@ class WishlistItem extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'title', 'description'];
+    protected $fillable = ['user_id', 'title', 'description', 'reserved_by'];
 
     public function user()
     {

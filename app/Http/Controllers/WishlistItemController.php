@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Models\User;
 use App\Models\WishlistItem;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -32,7 +33,7 @@ class WishlistItemController extends Controller
      */
     public function store(Request $request)
     {
-        $item = Auth::user()->wishlistItems()->create($request->only('title', 'description'));
+        Auth::user()->wishlistItems()->create($request->only('title', 'description'));
         return redirect()->back()->with('success', 'Wishlist item added!');
     }
 
@@ -75,5 +76,34 @@ class WishlistItemController extends Controller
         $wishlistItem = Auth::user()->wishlistItems()->findOrFail($id);
         $wishlistItem->delete();
         return redirect()->back();
+    }
+
+    public function members()
+    {
+        $users = User::where('id', '<>', auth()->id())->select('id', 'username')->get();
+        return Inertia::render('members', ['users' => $users]);
+    }
+
+    public function showForUser(User $user)
+    {
+        $wishlistItems = $user->wishlistItems()->latest()->get();
+        return Inertia::render('member-wishlist', [
+            'member' => $user,
+            'wishlistItems' => $wishlistItems,
+        ]);
+    }
+
+    public function reserve($id)
+    {
+        $item = WishlistItem::findOrFail($id);
+
+        if ($item->user_id === auth()->id() || $item->reserved_by) {
+            abort(403);
+        }
+
+        $item->reserved_by = auth()->id();
+        $item->save();
+
+        return back();
     }
 }

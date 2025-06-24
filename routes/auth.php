@@ -16,4 +16,6 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     Route::resource('wishlist-items', WishlistItemController::class)->except(['show', 'create', 'edit']);
+    Route::post('/wishlist-items/{item}/reserve', [WishlistItemController::class, 'reserve'])->name('wishlist-items.reserve');
+    Route::post('/wishlist-items/{item}/unreserve', [WishlistItemController::class, 'unreserve'])->name('wishlist-items.unreserve');
 });
