@@ -18,7 +18,8 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'username',
+        'name',
+        'email',
         'password',
     ];
 
@@ -40,12 +41,8 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function wishlistItems()
-    {
-        return $this->hasMany(WishlistItem::class);
     }
 }
