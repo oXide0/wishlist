@@ -14,12 +14,6 @@ type Member = {
 };
 
 export default function MemberWishlist({ member, wishlistItems }: { member: Member; wishlistItems: WishlistItem[] }) {
-    console.log('wishlistItems', wishlistItems);
-
-    function handleReserve(itemId: number) {
-        router.post(route('wishlist-items.reserve', itemId));
-    }
-
     return (
         <>
             <Head title={`${member.username}'s Wishlist`} />
@@ -38,8 +32,21 @@ export default function MemberWishlist({ member, wishlistItems }: { member: Memb
                                     <div className="font-medium text-gray-700">{item.title}</div>
                                     <div>
                                         {item.reserved_by == null && (
-                                            <button type="submit" className="text-green-600" onClick={() => handleReserve(item.id)}>
+                                            <button
+                                                type="submit"
+                                                className="text-green-600"
+                                                onClick={() => router.post(route('wishlist-items.reserve', item.id))}
+                                            >
                                                 Reserve
+                                            </button>
+                                        )}
+                                        {item.reserved_by != null && (
+                                            <button
+                                                type="submit"
+                                                className="text-green-600"
+                                                onClick={() => router.post(route('wishlist-items.unreserve', item.id))}
+                                            >
+                                                UnReserve
                                             </button>
                                         )}
 

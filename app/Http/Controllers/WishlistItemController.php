@@ -106,4 +106,18 @@ class WishlistItemController extends Controller
 
         return back();
     }
+
+    public function unreserve($id)
+    {
+        $item = WishlistItem::findOrFail($id);
+
+        if ($item->reserved_by !== auth()->id()) {
+            abort(403);
+        }
+
+        $item->reserved_by = null;
+        $item->save();
+
+        return back();
+    }
 }
