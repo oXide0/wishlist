@@ -11,15 +11,15 @@ test('login screen can be rendered', function () {
 });
 
 test('users can authenticate using the login screen', function () {
-    $user = User::factory()->create();
+    $user = User::factory()->create(['username' => 'username', 'password' => bcrypt('password')]);
 
     $response = $this->post('/login', [
-        'username' => $user->username,
+        'username' => 'username',
         'password' => 'password',
     ]);
 
     $this->assertAuthenticated();
-    $response->assertRedirect(route('/', absolute: false));
+    $response->assertRedirect(route('main', absolute: false));
 });
 
 test('users can not authenticate with invalid password', function () {
