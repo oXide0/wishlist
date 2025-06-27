@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Auth\LoginRequest;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,9 +16,7 @@ class UserController extends Controller
      */
     public function show(Request $request): Response
     {
-        return Inertia::render('login', [
-            'status' => $request->session()->get('status'),
-        ]);
+        return Inertia::render('login');
     }
 
     /**
