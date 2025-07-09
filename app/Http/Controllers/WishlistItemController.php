@@ -13,10 +13,10 @@ class WishlistItemController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $items = Auth::user()->wishlistItems;
-        return response()->json($items);
+        $wishlistItems = $request->user()->wishlistItems()->get();
+        return response()->json($wishlistItems);
     }
 
     /**
