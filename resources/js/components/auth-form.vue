@@ -1,4 +1,5 @@
 <script setup lang="ts">
+/* eslint-disable vue/no-mutating-props */
 import InputError from '@/components/input-error.vue';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,7 +30,7 @@ defineProps<Props>();
                     v-model="form.username"
                     placeholder="Username"
                 />
-                <InputError :message="form.errors.username" />
+                <InputError v-if="form.errors.password != null" :message="form.errors.username" />
             </div>
 
             <div class="grid gap-2">
@@ -43,7 +44,7 @@ defineProps<Props>();
                     v-model="form.password"
                     placeholder="Password"
                 />
-                <InputError :message="form.errors.password" />
+                <InputError v-if="form.errors.password != null" :message="form.errors.password" />
             </div>
 
             <Button type="submit" class="mt-4 w-full" :tabindex="3" :disabled="form.processing">
