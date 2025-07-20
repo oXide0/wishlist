@@ -10,18 +10,18 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('login'));
+    form.post(route('register'));
 };
 </script>
 
 <template>
-    <AuthLayout title="Log in to your account" description="Enter your name and password below to log in">
-        <Head title="Log in" />
+    <AuthLayout title="Create new account" description="Enter your name and password below to register">
+        <Head title="Register" />
 
         <AuthForm :form="form" :submit="submit" />
         <div class="text-center text-sm text-muted-foreground">
-            Don't have an account?
-            <TextLink :href="route('register')"> Sign up</TextLink>
+            Already have an account?
+            <TextLink :href="route('login')"> Log in</TextLink>
         </div>
     </AuthLayout>
 </template>
