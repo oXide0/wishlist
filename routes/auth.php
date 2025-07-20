@@ -1,21 +1,20 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\WishlistItemController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
-    Route::get('login', [UserController::class, 'show'])
-        ->name('login');
-
-    Route::post('login', [UserController::class, 'store']);
+    Route::post('register', [UserController::class, 'register']);
+    Route::post('login', [UserController::class, 'login']);
 });
 
 Route::middleware('auth')->group(function () {
-    Route::post('logout', [UserController::class, 'destroy'])
+    Route::post('logout', [UserController::class, 'logout'])
         ->name('logout');
 
+    Route::post('/groups', [GroupController::class, 'store'])->name('groups.store');
+
     Route::resource('wishlist-items', WishlistItemController::class)->except(['show', 'create', 'edit']);
-    Route::post('/wishlist-items/{item}/reserve', [WishlistItemController::class, 'reserve'])->name('wishlist-items.reserve');
-    Route::post('/wishlist-items/{item}/unreserve', [WishlistItemController::class, 'unreserve'])->name('wishlist-items.unreserve');
 });

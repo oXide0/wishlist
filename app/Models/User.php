@@ -3,12 +3,15 @@
 namespace App\Models;
 
 
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasFactory, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -42,7 +45,17 @@ class User extends Authenticatable
         ];
     }
 
-    public function wishlistItems()
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'group_user')->withTimestamps();
+    }
+
+    public function adminOfGroups(): HasMany
+    {
+        return $this->hasMany(Group::class, 'admin_id');
+    }
+
+    public function wishlistItems(): HasMany
     {
         return $this->hasMany(WishlistItem::class);
     }
